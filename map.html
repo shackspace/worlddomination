@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/jquery.ui.map.js"></script>
+    <script>
+      var map;
+      var markerlist ={};
+      function addInfoWindow(marker, message) {
+        var info = message;
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: message
+        });
+
+        google.maps.event.addListener(marker, 'click', function () {
+
+          // close all the infowindows
+          $.each(markerlist,function (k,v){
+            v["infowin"].close()
+          });
+          infoWindow.open(map, marker);
+        });
+        return infoWindow;
+      }
+      function initialize() {
+        var mapOptions = {
+          zoom: 5,
+          center: new google.maps.LatLng(51,9),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        map = new google.maps.Map(document.getElementById('map-canvas'),
+        mapOptions);
+
+        $.getJSON("marker.json",function (data){
+          $.each(data,function (k,v) {
+
+            // add initial marker
+            var pt=new google.maps.LatLng(v["latitude"],v["longitude"])
+            var marker= new google.maps.Marker({
+              id: k,map:map,title: k,position:pt,content:k})
+
+            marker["infowin"]=addInfoWindow(marker,k+'<br/>');
+            markerlist[k] = marker;
+          }); 
+        })
+      }; 
+
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+    <div id="map-canvas"></div>
+  </body>
+</html>

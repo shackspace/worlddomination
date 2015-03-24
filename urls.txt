@@ -1,0 +1,132 @@
+Brixel:http://spaceapi.net/cache/Brixel
+Awesome Space:http://spaceapi.net/cache/Awesome+Space
+bytewerk:http://spaceapi.net/cache/bytewerk
+CADR:http://spaceapi.net/cache/CADR
+CCCFr:http://spaceapi.net/cache/CCCFr
+Chaostreff Chemnitz:http://spaceapi.net/cache/Chaostreff+Chemnitz
+Nova Labs:http://spaceapi.net/cache/Nova+Labs
+Chaos inKL.:http://spaceapi.net/cache/Chaos+inKL.
+FAU FabLab:http://spaceapi.net/cache/FAU+FabLab
+Melbourne Makerspace:http://spaceapi.net/cache/Melbourne+Makerspace
+CSSA Common Room:http://spaceapi.net/cache/CSSA+Common+Room
+Tampere Hacklab 5w:http://spaceapi.net/cache/Tampere+Hacklab+5w
+DevLoL:http://spaceapi.net/cache/DevLoL
+E5:http://spaceapi.net/cache/E5
+Eigenbaukombinat Halle e.V.:http://spaceapi.net/cache/Eigenbaukombinat+Halle+e.V.
+Frack:http://spaceapi.net/cache/Frack
+Gothemburg Hackerspace:http://spaceapi.net/cache/Gothemburg+Hackerspace
+Hackerspace.gr:http://spaceapi.net/cache/Hackerspace.gr
+HackLabAsu:http://spaceapi.net/cache/HackLabAsu
+Hacksaar:http://spaceapi.net/cache/Hacksaar
+Laboratu00f3rio Hacker:http://spaceapi.net/cache/Laborat%C3%B3rio+Hacker
+Munich Maker Lab:http://spaceapi.net/cache/Munich+Maker+Lab
+NURDSpace:http://spaceapi.net/cache/NURDSpace
+Open Space Aarhus:http://spaceapi.net/cache/Open+Space+Aarhus
+Post Tenebras Lab:http://spaceapi.net/cache/Post+Tenebras+Lab
+PotteriesHackspace:http://spaceapi.net/cache/PotteriesHackspace
+Progressbar:http://spaceapi.net/cache/Progressbar
+Quelab:http://spaceapi.net/cache/Quelab
+Raul Hacker Club:http://spaceapi.net/cache/Raul+Hacker+Club
+RaumZeitLabor:http://spaceapi.net/cache/RaumZeitLabor
+spaceleft:http://spaceapi.net/cache/spaceleft
+Stgo MakerSpace:http://spaceapi.net/cache/Stgo+MakerSpace
+Umeu00e5 Hackerspace:http://spaceapi.net/cache/Ume%C3%A5+Hackerspace
+Vaasa Hacklab:http://spaceapi.net/cache/Vaasa+Hacklab
+York Hackspace:http://spaceapi.net/cache/York+Hackspace
+TkkrLab:http://spaceapi.net/cache/TkkrLab
+Attraktor Makerspace:http://spaceapi.net/cache/Attraktor+Makerspace
+coredump:http://spaceapi.net/cache/coredump
+57North Hacklab:http://57north.co/spaceapi
+/dev/tal:http://www.devtal.de/api/
+[hsmr]:http://hsmr.cc/spaceapi.json
+ACKspace:https://ackspace.nl/status.php
+AFRA:http://geruempel.ddns.net/status.json
+backspace:http://status.bckspc.de/spacestatus.php
+Bastli:http://bastli.ch/hackspace_api.php
+BinarySpace:http://www.binaryspace.co.za/status/status.php
+Bitlair:https://bitlair.nl/statejson.php
+Breizh-Entropy:http://breizh-entropy.org/spaceapi.json
+Bytespeicher:http://status.bytespeicher.org/status.json
+C3D2 GCHQ:http://www.hq.c3d2.de/spaceapi.json
+c-base:http://www.c-base.org/status.json
+CCC Hamburg:http://hamburg.ccc.de/dooris/status.json
+Chaosdorf:https://chaosdorf.de/space_api.json
+chaospott:http://status.chaospott.de/status.json
+Chaospott:http://foobarstatus.nomoketo.de/status.json
+Dingfabrik:http://dingfabrik.de/status/spaceapi.php
+Dlabs Hackerspace:http://www.dlabs.co/api.php
+Edinburgh Hacklab:http://spaceapi.edinburghhacklab.com/spaceapi.json
+Estau00e7u00e3o H4ck3r:https://spaceapi.net/new/space/esta_o_h4ck3r/status/json
+FIXME:https://fixme.ch/cgi-bin/spaceapi.py
+Freies Labor:https://freieslabor.org/api/info
+Freiraum:http://hackerspace-ulm.de/status.json
+GeekLabs:http://spaceapi.geeklabs.dk/?format=json
+H.A.C.K.:http://vsza.hu/hacksense/spaceapi_status.json
+HacDC:http://api.hacdc.org/status.php
+Hackeriet:http://spaceapi.hackeriet.no/hackeriet.spaceapi.json
+Hackerspace Bielefeld e.V.:http://hackerspace-bielefeld.de/status.json
+Hackerspace KRK:http://hskrk-spacemon.herokuapp.com
+Hackerspace Pardubice:https://spaceapi.net/new/space/hspce/status/json
+Hacksburg:http://wiki.hacksburg.org/status.json
+Krautspace:http://status.krautspace.de/api
+Hackspace Manchester:http://spaceapi.hacman.org.uk/
+Hackspace Siegen:http://spaceapi.hasi.it/
+HeatSync Labs:http://intranet.heatsynclabs.org/~access/cgi-bin/spaceapi.rb
+Hickerspace:http://hickerspace.org/api/info/
+Hive13:http://www.hive13.org/isOpen/api.php
+HSMTY:http://api.hsmty.org/status.json
+HTU Graz - Basisgruppe Informatik:http://edv-support.htu.tugraz.at/doorothy/bis/status.spaceapi
+HTU Graz - Basisgruppe Telematik:http://edv-support.htu.tugraz.at/doorothy/bagru/status.spaceapi
+IT-Syndikat:http://it-syndikat.org/status.php
+Jeanne D'Hack:http://spaceapi.net/cache/Jeanne+D%27Hack
+Laboratorio Hacker de Campinas:http://lhc.net.br/spacenet.json
+LAG:http://state.laglab.org/spaceapi.json
+Lamba Labs:http://status.lambalabs.org/public.php
+Le Loop:http://spaceapi.net/cache/Le+Loop
+Leeds Hackspace:http://www.leedshackspace.org.uk/status.php
+London Hackspace:https://london.hackspace.org.uk/spaceapi
+Mainframe:http://status.mainframe.io/api/spaceInfo
+MakeHackVoid Canberra:http://spaceapi.net/cache/MakeHackVoid+Canberra
+Makers Local 256:https://256.makerslocal.org/status.json
+Maschinendeck:http://state.maschinendeck.org/spaceapi.json
+Maschinenraum:http://api.maschinenraum.tk/status.json
+MechArtLab:http://spaceapi.net/cache/MechArtLab
+MetaMeute:http://status.metameute.de/spaceapi.json
+MidsouthMakers:http://midsouthmakers.org/spaceapi/
+miLKlabs:http://status.mlkl.bz/json
+Milwaukee Makerspace:http://apps.2xlnetworks.net/milwaukeemakerspace/
+Minsk Hackerspace:http://hackerspace.by/spaceapi
+MuCCC:http://api.muc.ccc.de/spaceapi.json
+nbsp:http://status.nobreakspace.org/spaceapi.json
+Netz39:http://spaceapi.n39.eu/json
+Netzladen:http://netzladen.org/api/status.json
+Noklab:https://cccgoe.de/spaceapi.php
+Nottinghack:http://lspace.nottinghack.org.uk/status/status.php
+OpenLab:http://api.openlab-augsburg.de/data.json
+P-Space:http://pspace.dyndns.org/space.php
+P'yu014fngyang Hackerspace:http://status.pyongyanghackerspace.org/jiwi.json
+Randomdata:http://randomdata.nl/hsapi.php
+Reaktor 23:http://spaceapi.reaktor23.org/spaceapi
+realraum:http://realraum.at/status.json
+Recompile:http://spaceapi.net/cache/Recompile
+RevSpace:http://revspace.nl/status/status.php
+shackspace - stuttgart hackerspace:http://shackspace.de/spaceapi-query-0.13
+Sk1llz:http://sk1llz.nl/spaceapi.php
+Stratum 0:http://status.stratum0.org/status.json
+sublab:http://sublab.org/status.json
+Sudo Room:http://api.sudoroom.org/status.json
+Swansea Hackspace:http://swansea.hackspace.org.uk/spaceapi.php
+Level2:http://spaceapi.syn2cat.lu/status/json
+Taipei Hackerspace:https://taipeihack.org/spaceapi
+Tangleball:http://www.tangleball.org.nz/wiki/index.php/Space_API?action=raw
+Tarrafa Hacker Clube:http://tarrafa.net/spaceapi.json
+Technologia Incognita:http://techinc.nl/space/spacestate.json
+TechTonik Labs:https://raw.github.com/sbhackerspace/sbhx-spaceapi/master/spaceapi.json
+Terminal.21 Basislager:http://api.terminal21.de
+TOG:http://tog.ie/cgi-bin/space
+Triangulo Hackerspace:http://spaceapi.triangulohackerspace.net.br/spaceapi.json
+turmlabor:http://www.turmlabor.de/spaces.api
+UrLab:http://api.urlab.be/spaceapi/
+VoidWarranties:http://we.voidwarranties.be/SpaceAPI/
+Warpzone:https://www.warpzone.ms/api/spaceapi.php
+Warsaw Hackerspace:https://hackerspace.pl/spaceapi
