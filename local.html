@@ -15,6 +15,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/jquery.ui.map.js"></script>
     <script>
+        
+      console.log('before prepare');
       var map;
       var markerlist ={};
       function addInfoWindow(marker, message) {
@@ -34,7 +36,10 @@
         });
         return infoWindow;
       }
+      console.log('prepare')
       function initialize() {
+        
+        console.log('initialize')
         var mapOptions = {
           zoom: 5,
           center: new google.maps.LatLng(51,9),
@@ -43,18 +48,19 @@
         map = new google.maps.Map(document.getElementById('map-canvas'),
                                   mapOptions);
         function loadData(){
+          console.log('load data')
            google.maps.event.removeListener(tileListener);
            //immediately remove the listener (or this thing fires for every
            // tile that gets loaded, which is a lot when you start to pan)
-          var directory_url = 'http://spaceapi.net/directory.json'
           var timeout = 0
           var timeout_increment = 200
-          $.getJSON('marker.json',function (data){
-            //$.ajaxSetup({ async: false });
-            $.each(data,function (k,data) {
-              //console.log('key:'+k+'url:'+url)
+
+          $.getJSON('cache.json',function (x){
+            $.each(x,function (k,data) {
               timeout = timeout + timeout_increment
               setTimeout(function (){
+                console.log('key:'+k)
+                console.log(data)
                 if( data["lat"]){
                   var pt=new google.maps.LatLng(data["lat"],data["lon"])
 
@@ -62,7 +68,8 @@
                   var loc = data['location']
                   var pt=new google.maps.LatLng(loc["lat"],loc["lon"])
                 }
-                var icon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                var icon = '//maps.google.com/mapfiles/ms/icons/red-dot.png'
+
                 //if (data['state'] ){
                 //  if (data['state']['icon']){
                 //    if (data['state']['icon']['open'] &&
@@ -76,8 +83,9 @@
                 //    }
                 //  }
                 //}else
-                if (data['open']){
-                  icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+
+                if (data['open'] || (data['state'] && data['state']['open'])){
+                  icon = '//maps.google.com/mapfiles/ms/icons/green-dot.png'
                 }
                 var marker= new google.maps.Marker({
                         animation: google.maps.Animation.DROP,
@@ -87,12 +95,12 @@
                 markerlist[k] = marker;
               },timeout);
             }); 
-            //$.ajaxSetup({ async: true });
           })
         } 
         tileListener = google.maps.event.addListener(map,'tilesloaded',loadData);
       }; 
-        google.maps.event.addDomListener(window, 'load', initialize);
+      
+      google.maps.event.addDomListener(window, 'load', initialize);
           
     </script>
   </head>

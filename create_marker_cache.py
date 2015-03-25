@@ -12,28 +12,15 @@ def main():
         try:
             ret = requests.get(url,verify=False).json()
 
-            try:
-                lat = ret['location']['lat'] 
-                lon = ret['location']['lon'] 
-            except:
-                lat = ret['lat']
-                lon = ret['lon']
 
-            try:
-                o = ret['open']
-            except:
-                o = False
-
-            out[space] = { 'latitude': lat, 
-                    'longitude': lon,
-                    'open': o }
+            out[space] = ret
             print(" succeeded!")
         except Exception as e:
             print(" failed - url {} - {}".format(space,url,e))
 
 
-    with open('marker.json', 'w') as markers:
-        json.dump(out,marker)
+    with open('cache.json', 'w') as markers:
+        json.dump(out,markers)
 
 
 if __name__ == "__main__":
