@@ -1,39 +1,52 @@
 #!/usr/bin/env python3
 
-import json,sys
+import json
 import requests
-directory_url = 'http://spaceapi.net/directory.json'
+
 
 def main():
-    spaces = requests.get(directory_url,verify=False).json()
+    spaces = []
+
+    data = requests.get('http://spaceapi.net/directory.json?api=0.13')
+    data = data.json()
+    for key in data:
+        name = key
+        url = data[key]
+        space = {}
+        space['name'] = name
+        space['url'] = url
+        spaces.append(space)
+
+    for space in spaces:
+        get_spaceapi_data(space)
+    output(spaces)
+
+
+def output(spaces):
     out = {}
-    for space,url in spaces.items():
-        sys.stdout.write(space)
+    for space in spaces:
+        print(space)
         try:
-            ret = requests.get(url,verify=False).json()
+            out[space['name']] = {'latitude': space['lat'],
+                                   'longitude': space['lon']}
+        except:
+            print("no data for spacei %s" % space['name'])
+            print(space)
+            pass
 
-            try:
-                lat = ret['location']['lat'] 
-                lon = ret['location']['lon'] 
-            except:
-                lat = ret['lat']
-                lon = ret['lon']
-
-            try:
-                o = ret['open']
-            except:
-                o = False
-
-            out[space] = { 'latitude': lat, 
-                    'longitude': lon,
-                    'open': o }
-            print(" succeeded!")
-        except Exception as e:
-            print(" failed - url {} - {}".format(space,url,e))
+    with open('marker.json', 'w') as marker:
+        marker.write(json.dumps(out))
 
 
-    with open('marker.json', 'w') as markers:
-        json.dump(out,marker)
+def get_spaceapi_data(space):
+    requests.packages.urllib3.disable_warnings()
+    data = requests.get(space['url'], verify=False)
+    data = data.json()
+    try:
+        space['lat'] = data['location']['lat']
+        space['lon'] = data['location']['lon']
+    except:
+        pass
 
 
 if __name__ == "__main__":

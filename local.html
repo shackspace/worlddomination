@@ -49,44 +49,42 @@
           var directory_url = 'http://spaceapi.net/directory.json'
           var timeout = 0
           var timeout_increment = 200
-          $.getJSON(directory_url,function (data){
+          $.getJSON('marker.json',function (data){
             //$.ajaxSetup({ async: false });
-            $.each(data,function (k,url) {
+            $.each(data,function (k,data) {
               //console.log('key:'+k+'url:'+url)
               timeout = timeout + timeout_increment
               setTimeout(function (){
-                $.getJSON(url,function (data){
-                  if( data["lat"]){
-                    var pt=new google.maps.LatLng(data["lat"],data["lon"])
+                if( data["lat"]){
+                  var pt=new google.maps.LatLng(data["lat"],data["lon"])
 
-                  }else {
-                    var loc = data['location']
-                    var pt=new google.maps.LatLng(loc["lat"],loc["lon"])
-                  }
-                  var icon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
-                  //if (data['state'] ){
-                  //  if (data['state']['icon']){
-                  //    if (data['state']['icon']['open'] &&
-                  //        data['state']['icon']['closed']  ){
-                  //      if (data['open']){
-                  //        icon = data['state']['icon']['open'] 
-                  //      }else{
-                  //        icon = data['state']['icon']['closed'] 
-                  //      }
+                }else {
+                  var loc = data['location']
+                  var pt=new google.maps.LatLng(loc["lat"],loc["lon"])
+                }
+                var icon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                //if (data['state'] ){
+                //  if (data['state']['icon']){
+                //    if (data['state']['icon']['open'] &&
+                //        data['state']['icon']['closed']  ){
+                //      if (data['open']){
+                //        icon = data['state']['icon']['open'] 
+                //      }else{
+                //        icon = data['state']['icon']['closed'] 
+                //      }
 
-                  //    }
-                  //  }
-                  //}else
-                  if (data['open']){
-                    icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
-                  }
-                  var marker= new google.maps.Marker({
-                         animation: google.maps.Animation.DROP,
-                        icon:icon, id: k,map:map,title: k,position:pt,content:k})
+                //    }
+                //  }
+                //}else
+                if (data['open']){
+                  icon = 'http://maps.google.com/mapfiles/ms/icons/green-dot.png'
+                }
+                var marker= new google.maps.Marker({
+                        animation: google.maps.Animation.DROP,
+                      icon:icon, id: k,map:map,title: k,position:pt,content:k})
 
-                  marker["infowin"]=addInfoWindow(marker,k+'<br/>');
-                  markerlist[k] = marker;
-                }).fail(function() {('failed for key '+ key+ ' url '+url)})
+                marker["infowin"]=addInfoWindow(marker,k+'<br/>');
+                markerlist[k] = marker;
               },timeout);
             }); 
             //$.ajaxSetup({ async: true });
