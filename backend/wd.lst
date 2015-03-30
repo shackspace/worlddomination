@@ -32,7 +32,6 @@ http://status.stratum0.org/status.json
 https://cccgoe.de/spaceapi.php
 http://status.bytespeicher.org/status.json
 http://api.maschinenraum.tk/status.json
-http://status.krautspace.de/api
 http://status.bckspc.de/spacestatus.php
 http://spaceapi.net/cache/FAU+FabLab
 http://spaceapi.net/cache/bytewerk
@@ -62,3 +61,18 @@ http://spaceapi.net/cache/spaceleft
 http://status.chaospott.de/status.json
 https://www.warpzone.ms/api/spaceapi.php
 http://spaceapi.net/cache/TkkrLab
+http://hack42.nl/spacestate/json.php
+http://techinc.nl/space/spacestate.json
+http://spaceapi.net/cache/Frack
+http://revspace.nl/status/status.php
+http://spaceapi.net/cache/Brixel
+http://api.urlab.be/spaceapi/
+http://spaceapi.net/cache/Jeanne+D%27Hack
+http://spaceapi.net/cache/Le+Loop
+http://breizh-entropy.org/spaceapi.json
+http://www.dlabs.co/api.php
+http://spaceapi.net/cache/Post+Tenebras+Lab
+https://fixme.ch/cgi-bin/spaceapi.py
+http://status.lambalabs.org/public.php
+http://cam.hackerspace.sg/space/
+http://status.pyongyanghackerspace.org/jiwi.json
