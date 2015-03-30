@@ -44,16 +44,20 @@ def writeLeds():
         print('wrote leds: {}'.format(ledbuffer))
         #print('Result: %s\n%r'%(response.code, response.payload))
         pass
+from multiprocessing import Pool
+def async_get(url):
+    url = url.strip()
+    return (url,requests.get(url,verify=False).json())
 
 def main(fn):
+    tp = Pool(20)
     with open(fn) as f:
-        for ln,l in enumerate(f):
-            l = l.strip()
+        for ln,ld in enumerate(tp.map(async_get,f)):
+            l,d=ld
             if not l:
                 # fallback when hackerspace api is broken
                 customLed(idx,b'\x25\x00\x25')
                 continue
-            d = requests.get(l,verify=False).json()
             if 'open' in d:
                 o =  d['open']
             elif 'state' in d and 'open' in d['state']:
