@@ -1,0 +1,10 @@
+[Unit]
+Description=set worlddomination map
+
+[Service]
+Type=oneshot
+User=nobody
+Group=nobody
+#RemainAfterExit=yes
+WorkingDirectory=/opt/worlddomination/backend/
+ExecStart=/bin/sh update_map.sh
