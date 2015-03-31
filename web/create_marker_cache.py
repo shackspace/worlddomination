@@ -2,22 +2,29 @@
 
 import json,sys
 import requests
+from multiprocessing import Pool
 directory_url = 'http://spaceapi.net/directory.json'
 
+def get_async(su):
+    space,url = su
+    try:
+        ret = requests.get(url,verify=False).json()
+    except:
+        ret = {}
+    return (space,url,ret)
+
 def main():
+    p = Pool(20)
     spaces = requests.get(directory_url,verify=False).json()
     out = {}
-    for space,url in spaces.items():
+    for space,url,ret in p.map(get_async,spaces.items()):
         sys.stdout.write(space)
-        try:
-            ret = requests.get(url,verify=False).json()
 
-
+        if not ret:
+            print(" failed - url {} - {}".format(space,url))
+        else:
             out[space] = ret
             print(" succeeded!")
-        except Exception as e:
-            print(" failed - url {} - {}".format(space,url,e))
-
 
     with open('cache.json', 'w') as markers:
         json.dump(out,markers)

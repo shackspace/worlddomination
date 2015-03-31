@@ -43,7 +43,7 @@
         map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
 
-        $.getJSON("marker.json",function (data){
+        $.getJSON("cache.json",function (data){
           $.each(data,function (k,v) {
 
             // add initial marker
