@@ -16,7 +16,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-map/3.0-rc1/jquery.ui.map.js"></script>
     <script>
         
-      console.log('before prepare');
       var map;
       var markerlist ={};
       function addInfoWindow(marker, message) {
@@ -59,8 +58,6 @@
             $.each(x,function (k,data) {
               timeout = timeout + timeout_increment
               setTimeout(function (){
-                console.log('key:'+k)
-                console.log(data)
                 if( data["lat"]){
                   var pt=new google.maps.LatLng(data["lat"],data["lon"])
 
