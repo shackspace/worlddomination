@@ -47,7 +47,11 @@ def writeLeds():
 from multiprocessing import Pool
 def async_get(url):
     url = url.strip()
-    return (url,requests.get(url,verify=False).json())
+    try:
+        return (url,requests.get(url,verify=False).json())
+    except Exception as e:
+        print("ERROR: " + url + " -> " +str(e) )
+        return (url,{})
 
 def main(fn):
     tp = Pool(20)
