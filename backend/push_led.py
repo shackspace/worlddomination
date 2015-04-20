@@ -12,7 +12,7 @@ requests.packages.urllib3.disable_warnings()
 
 ledbuffer=b'\x00\x00\x00'
 #ledbuffer+= b'\x00\x00\x00'*40
-host="10.42.26.69"
+host="esp8266"
 setled_path="/v1/f/setLeds"
 
 def customLed(idx,color_data):
