@@ -48,7 +48,7 @@ from multiprocessing import Pool
 def async_get(url):
     url = url.strip()
     try:
-        return (url,requests.get(url,verify=False).json())
+        return (url,requests.get(url,verify=False,timeout=5).json())
     except Exception as e:
         print("ERROR: " + url + " -> " +str(e) )
         return (url,{})
@@ -57,10 +57,17 @@ def main(fn):
     tp = Pool(20)
     with open(fn) as f:
         for ln,ld in enumerate(tp.map(async_get,f)):
+            # l < url
+            # d < space api response
             l,d=ld
-            if not l:
+
+            if l == "http://shackspace.de/spaceapi-query-0.13":
+                customLed(ln,b'\x10\x10\xff')
+                print('found shackspace')
+                continue
+            elif not l:
                 # fallback when hackerspace api is broken
-                customLed(idx,b'\x25\x00\x25')
+                customLed(ln,b'\x25\x00\x25')
                 continue
             if 'open' in d:
                 o =  d['open']
@@ -68,7 +75,7 @@ def main(fn):
                 o = d['state']['open'] 
             else:
                 print("cannot find 'open' for {}".format(l))
-                setLed(ln,False)
+                o = False
             print(ln,l,o)
             setLed(ln,o)
     
