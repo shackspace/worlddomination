@@ -18,7 +18,7 @@ back=full-num
 ledbuffer=b"\x00\x00\x00"*front
 ledbuffer+=b"\xff\x00\x00"
 ledbuffer+=b"\x00\x00\x00"*back
-host="10.42.26.69"
+host="esp8266"
 setled_path="/v1/f/setLeds"
 
 
