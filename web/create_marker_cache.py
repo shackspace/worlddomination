@@ -17,6 +17,7 @@ def main():
     p = Pool(20)
     spaces = requests.get(directory_url,verify=False).json()
     out = {}
+    print(len(spaces))
     for space,url,ret in p.map(get_async,spaces.items()):
         sys.stdout.write(space)
 
