@@ -1,19 +1,47 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
+"""usage: push-led HOST URLFILE [loop [TIMEOUT]]
+
+HOST is the esp8266 coap endpoint
+URLFILE is the path to the file which contains all the URL endpoints to be tested
+if loop is requested TIMEOUT defines the number of minutes to wait before continuing
+"""
 import struct
 
 import json,sys
+from time import clock
 
 import asyncio
 from aiocoap import *
 
 import urllib
 import requests
+import logging
+logging.basicConfig(level=logging.INFO)
+log = logging.getLogger()
 requests.packages.urllib3.disable_warnings()
 
 ledbuffer=b'\x00\x00\x00'
 #ledbuffer+= b'\x00\x00\x00'*40
-host="esp8266"
 setled_path="/v1/f/setLeds"
+shackspace_endpoint = "http://shackspace.de/spaceapi-query-0.13"
+
+def main():
+    from docopt import docopt
+    args = docopt(__doc__)
+    host = args['HOST']
+    urlfile = args['URLFILE']
+
+
+    while args['loop']:
+        begin = clock()
+        timeout = int(args['TIMEOUT'] or 10 ) * 60
+        fetchmain(urlfile,20,host)
+        sleeptime = timeout + (clock()-begin)
+        log.info("sleeping for {.2f} minutes".format(sleeptime/60))
+        sleep(sleeptime)
+    else:
+        fetchmain(urlfile,20,host)
+
 
 def customLed(idx,color_data):
     global ledbuffer
@@ -21,16 +49,15 @@ def customLed(idx,color_data):
 
 def setLed(idx,state):
     global ledbuffer
-    print(state)
 
+    log.debug('State: {}'.format(state) )
     if state:
-        print('true')
         ledbuffer+=b"\x00\x25\x00"
     else:
         ledbuffer+=b"\x25\x00\x00"
 
 @asyncio.coroutine
-def writeLeds():
+def writeLeds(host):
     protocol = yield from Context.create_client_context()
     request = Message(code=POST,payload=ledbuffer)
     request.set_request_uri('coap://{}{}'.format(host,setled_path))
@@ -38,30 +65,29 @@ def writeLeds():
     try:
         response = yield from protocol.request(request).response
     except Exception as e:
-        print('Failed to fetch resource:')
-        print(e)
+        log.error('Failed to fetch resource:'.format(e))
     else:
-        print('wrote leds: {}'.format(ledbuffer))
-        #print('Result: %s\n%r'%(response.code, response.payload))
-        pass
+        log.info('wrote leds: {}'.format(ledbuffer))
+        log.debug('Result: %s\n%r'%(response.code, response.payload))
+
 from multiprocessing import Pool
 def async_get(url):
     url = url.strip()
     try:
         return (url,requests.get(url,verify=False,timeout=5).json())
     except Exception as e:
-        print("ERROR: " + url + " -> " +str(e) )
+        log.error("Error while fetching {}: {}".format(url,e) )
         return (url,{})
 
-def main(fn):
-    tp = Pool(20)
+def fetchmain(fn,pool_size,host):
+    tp = Pool(pool_size)
     with open(fn) as f:
         for ln,ld in enumerate(tp.map(async_get,f)):
             # l < url
             # d < space api response
             l,d=ld
 
-            if l == "http://shackspace.de/spaceapi-query-0.13":
+            if l == shackspace_endpoint:
                 customLed(ln,b'\x10\x10\xff')
                 print('found shackspace')
                 continue
@@ -74,15 +100,14 @@ def main(fn):
             elif 'state' in d and 'open' in d['state']:
                 o = d['state']['open'] 
             else:
-                print("cannot find 'open' for {}".format(l))
+                log.warn("cannot find 'open' for {}".format(l))
                 o = False
-            print(ln,l,o)
+            log.info("{}: {} is {}".format(ln,l,o))
             setLed(ln,o)
-    
-    
-    asyncio.get_event_loop().run_until_complete(writeLeds())
+
+    asyncio.get_event_loop().run_until_complete(writeLeds(host))
 
 
 if __name__ == "__main__":
-    main("wd.lst")
-    
+    main()
+
