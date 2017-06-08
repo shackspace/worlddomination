@@ -6,9 +6,8 @@ URLFILE is the path to the file which contains all the URL endpoints to be teste
 if loop is requested TIMEOUT defines the number of minutes to wait before continuing
 """
 import struct
-
 import json,sys
-from time import clock
+from time import clock,sleep
 
 import asyncio
 from aiocoap import *
@@ -37,7 +36,7 @@ def main():
         timeout = int(args['TIMEOUT'] or 10 ) * 60
         fetchmain(urlfile,20,host)
         sleeptime = timeout + (clock()-begin)
-        log.info("sleeping for {.2f} minutes".format(sleeptime/60))
+        log.info("sleeping for {:.2f} minutes".format(sleeptime/60))
         sleep(sleeptime)
     else:
         fetchmain(urlfile,20,host)
