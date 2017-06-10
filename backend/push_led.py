@@ -9,6 +9,7 @@ import struct
 import json,sys
 from time import clock,sleep
 
+from multiprocessing import Pool
 import asyncio
 from aiocoap import *
 
@@ -30,16 +31,16 @@ def main():
     host = args['HOST']
     urlfile = args['URLFILE']
 
-
+    pool = Pool(20)
     while args['loop']:
         begin = clock()
         timeout = int(args['TIMEOUT'] or 10 ) * 60
-        fetchmain(urlfile,20,host)
+        fetchmain(urlfile,pool,host)
         sleeptime = timeout + (clock()-begin)
         log.info("sleeping for {:.2f} minutes".format(sleeptime/60))
         sleep(sleeptime)
     else:
-        fetchmain(urlfile,20,host)
+        fetchmain(urlfile,pool,host)
 
 
 def customLed(idx,color_data):
@@ -69,7 +70,6 @@ def writeLeds(host):
         log.info('wrote leds: {}'.format(ledbuffer))
         log.debug('Result: %s\n%r'%(response.code, response.payload))
 
-from multiprocessing import Pool
 def async_get(url):
     url = url.strip()
     try:
@@ -78,8 +78,7 @@ def async_get(url):
         log.error("Error while fetching {}: {}".format(url,e) )
         return (url,{})
 
-def fetchmain(fn,pool_size,host):
-    tp = Pool(pool_size)
+def fetchmain(fn,tp,host):
     with open(fn) as f:
         for ln,ld in enumerate(tp.map(async_get,f)):
             # l < url
