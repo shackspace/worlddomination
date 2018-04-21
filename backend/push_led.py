@@ -51,7 +51,9 @@ def setLed(idx,state):
     global ledbuffer
 
     log.debug('State: {}'.format(state) )
-    if state:
+    if state == 10:
+        ledbuffer+=b"\x25\x25\x00"
+    elif state:
         ledbuffer+=b"\x00\x25\x00"
     else:
         ledbuffer+=b"\x25\x00\x00"
@@ -79,6 +81,9 @@ def async_get(url):
         return (url,{})
 
 def fetchmain(fn,tp,host):
+    # fn: filename
+    # tp: threadpool
+    # host: remote host
     with open(fn) as f:
         for ln,ld in enumerate(tp.map(async_get,f)):
             # l < url
@@ -99,7 +104,7 @@ def fetchmain(fn,tp,host):
                 o = d['state']['open'] 
             else:
                 log.warn("cannot find 'open' for {}".format(l))
-                o = False
+                o = 10
             log.info("{}: {} is {}".format(ln,l,o))
             setLed(ln,o)
 
