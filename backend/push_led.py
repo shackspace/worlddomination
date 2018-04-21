@@ -8,8 +8,7 @@ if loop is requested TIMEOUT defines the number of minutes to wait before contin
 import struct
 import json,sys
 from time import clock,sleep
-
-from multiprocessing import Pool
+import grequests
 import asyncio
 from aiocoap import *
 from signal import signal,alarm,SIGALRM
@@ -25,38 +24,24 @@ ledbuffer=b'\x00\x00\x00'
 setled_path="/v1/f/setLeds"
 shackspace_endpoint = "http://shackspace.de/spaceapi-query-0.13"
 
-loop_timeout=120
-
 def main():
     from docopt import docopt
     args = docopt(__doc__)
     host = args['HOST']
     urlfile = args['URLFILE']
 
-    pool = Pool(30)
     while args['loop']:
         begin = clock()
         timeout = int(args['TIMEOUT'] or 10 ) * 60
-        log.info("begin loop, timeout is {}, alarm at 1minute".format(timeout))
+        log.info("begin loop, timeout is {}".format(timeout))
 
-        def _timeout(dont,care):raise RuntimeError()
-
-        signal(SIGALRM,_timeout  )
-        alarm(loop_timeout)
-        try:
-            fetchmain(urlfile,pool,host)
-        except RuntimeError as e:
-            log.error("waited {} secs for loop to complete,loop took too long!".format(loop_timeout))
-            pool.terminate()
-        finally:
-            alarm(0)
-
-
-        sleeptime = timeout + (clock()-begin)
+        fetchmain(urlfile,host)
+        end = clock()
+        sleeptime = begin - end + timeout
         log.info("sleeping for another {:.2f} minutes".format(sleeptime/60))
         sleep(sleeptime)
     else:
-        fetchmain(urlfile,pool,host)
+        fetchmain(urlfile,host)
 
 
 def customLed(idx,color_data):
@@ -89,43 +74,40 @@ def writeLeds(host):
         log.info('wrote leds: {}'.format(ledbuffer))
         log.debug('Result: %s\n%r'%(response.code, response.payload))
 
-def async_get(url):
-    url = url.strip()
-    try:
-        return (url,requests.get(url,verify=False,timeout=5).json())
-    except Exception as e:
-        log.error("Error while fetching {}: {}".format(url,e) )
-        return (url,{})
-
-def fetchmain(fn,tp,host):
+def fetchmain(fn,host):
     # fn: filename
     # tp: threadpool
     # host: remote host
-
-    
+    reqs = []
     with open(fn) as f:
-        for ln,ld in enumerate(tp.map(async_get,f)):
-            # l < url
-            # d < space api response
-            l,d=ld
+        for url in f: reqs.append(grequests.get(url.strip(),timeout=5,verify=False))
 
-            if l == shackspace_endpoint:
-                customLed(ln,b'\x10\x10\xff')
-                log.debug('found shackspace')
-                continue
-            elif not l:
-                # fallback when hackerspace api is broken
-                customLed(ln,b'\x25\x00\x25')
-                continue
-            if 'open' in d:
-                o =  d['open']
-            elif 'state' in d and 'open' in d['state']:
-                o = d['state']['open'] 
-            else:
-                log.warn("cannot find 'open' for {}".format(l))
-                o = 10
-            log.info("{}: {} is {}".format(ln,l,o))
-            setLed(ln,o)
+
+    for ln,resp in enumerate(grequests.map(reqs)):
+        # l < url
+        # d < space api response
+        try:
+            l = resp.url
+            d = resp.json()
+        except:
+            log.debug("cannot get status of line {}".format(ln))
+            l = None
+            d = {}
+        if l == shackspace_endpoint:
+            customLed(ln,b'\x10\x10\xff')
+            log.info('found shackspace')
+            continue
+        elif not d:
+            o = 10
+        if 'open' in d:
+            o =  d['open']
+        elif 'state' in d and 'open' in d['state']:
+            o = d['state']['open']
+        else:
+            log.debug("cannot find 'open' for {}".format(l))
+            o = 10
+        log.info("{}: {} is {}".format(ln,l,o))
+        setLed(ln,o)
 
     asyncio.get_event_loop().run_until_complete(writeLeds(host))
 
