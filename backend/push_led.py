@@ -12,7 +12,7 @@ from time import clock,sleep
 from multiprocessing import Pool
 import asyncio
 from aiocoap import *
-
+from signal import signal,alarm,SIGALRM
 import urllib
 import requests
 import logging
@@ -25,18 +25,33 @@ ledbuffer=b'\x00\x00\x00'
 setled_path="/v1/f/setLeds"
 shackspace_endpoint = "http://shackspace.de/spaceapi-query-0.13"
 
+loop_timeout=120
+
 def main():
     from docopt import docopt
     args = docopt(__doc__)
     host = args['HOST']
     urlfile = args['URLFILE']
 
-    pool = Pool(20)
+    pool = Pool(30)
     while args['loop']:
         begin = clock()
         timeout = int(args['TIMEOUT'] or 10 ) * 60
-        log.info("begin loop, timeout is {}".format(timeout))
-        fetchmain(urlfile,pool,host)
+        log.info("begin loop, timeout is {}, alarm at 1minute".format(timeout))
+
+        def _timeout(dont,care):raise RuntimeError()
+
+        signal(SIGALRM,_timeout  )
+        alarm(loop_timeout)
+        try:
+            fetchmain(urlfile,pool,host)
+        except RuntimeError as e:
+            log.error("waited {} secs for loop to complete,loop took too long!".format(loop_timeout))
+            pool.terminate()
+        finally:
+            alarm(0)
+
+
         sleeptime = timeout + (clock()-begin)
         log.info("sleeping for another {:.2f} minutes".format(sleeptime/60))
         sleep(sleeptime)
@@ -86,6 +101,8 @@ def fetchmain(fn,tp,host):
     # fn: filename
     # tp: threadpool
     # host: remote host
+
+    
     with open(fn) as f:
         for ln,ld in enumerate(tp.map(async_get,f)):
             # l < url
