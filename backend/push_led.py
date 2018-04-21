@@ -35,9 +35,10 @@ def main():
     while args['loop']:
         begin = clock()
         timeout = int(args['TIMEOUT'] or 10 ) * 60
+        log.info("begin loop, timeout is {}".format(timeout))
         fetchmain(urlfile,pool,host)
         sleeptime = timeout + (clock()-begin)
-        log.info("sleeping for {:.2f} minutes".format(sleeptime/60))
+        log.info("sleeping for another {:.2f} minutes".format(sleeptime/60))
         sleep(sleeptime)
     else:
         fetchmain(urlfile,pool,host)
@@ -52,7 +53,7 @@ def setLed(idx,state):
 
     log.debug('State: {}'.format(state) )
     if state == 10:
-        ledbuffer+=b"\x25\x25\x00"
+        ledbuffer+=b"\x20\x25\x00"
     elif state:
         ledbuffer+=b"\x00\x25\x00"
     else:
@@ -60,6 +61,7 @@ def setLed(idx,state):
 
 @asyncio.coroutine
 def writeLeds(host):
+    log.info("beginning to write LEDs to {}".format(host))
     protocol = yield from Context.create_client_context()
     request = Message(code=POST,payload=ledbuffer)
     request.set_request_uri('coap://{}{}'.format(host,setled_path))
@@ -92,7 +94,7 @@ def fetchmain(fn,tp,host):
 
             if l == shackspace_endpoint:
                 customLed(ln,b'\x10\x10\xff')
-                print('found shackspace')
+                log.debug('found shackspace')
                 continue
             elif not l:
                 # fallback when hackerspace api is broken
