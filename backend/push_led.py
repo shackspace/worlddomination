@@ -13,11 +13,16 @@ import asyncio
 from aiocoap import *
 from signal import signal,alarm,SIGALRM
 import urllib
-import requests
 import logging
+
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("requests").setLevel(logging.CRITICAL)
+
 log = logging.getLogger()
-requests.packages.urllib3.disable_warnings()
+
+import urllib3
+urllib3.disable_warnings()
+logging.captureWarnings(True)
 
 ledbuffer=b'\x00\x00\x00'
 #ledbuffer+= b'\x00\x00\x00'*40
@@ -81,9 +86,10 @@ def fetchmain(fn,host):
     reqs = []
     with open(fn) as f:
         for url in f: reqs.append(grequests.get(url.strip(),timeout=5,verify=False))
+    def exception_handler(request, exception):
+        log.error("{} failed".format(request.url))
 
-
-    for ln,resp in enumerate(grequests.map(reqs)):
+    for ln,resp in enumerate(grequests.map(reqs, exception_handler=exception_handler)):
         # l < url
         # d < space api response
         try:
