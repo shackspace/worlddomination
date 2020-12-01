@@ -7,7 +7,8 @@ if loop is requested TIMEOUT defines the number of minutes to wait before contin
 """
 import struct
 import json,sys
-from time import clock,sleep
+from time import sleep
+from time import perf_counter as clock
 import grequests
 import asyncio
 from aiocoap import *
