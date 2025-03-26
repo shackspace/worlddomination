@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+""" usage: loop_single [HOST] [NUMLEDS] [SINGLELED]
+"""
 import struct,time
 
 import json,sys
@@ -11,7 +13,6 @@ import requests
 requests.packages.urllib3.disable_warnings()
 
 ledbuffer=b''
-host="10.42.24.7"
 setled_path="/v1/f/setLeds"
 #max_led=78
 max_led=20
@@ -43,17 +44,21 @@ async def writeLeds():
         pass
 
 def main(fn):
+    global host 
+    args = docopt(__doc__)
+    host = args["HOST"] or "10.42.24.7"
+    max_led = int(args["NUMLEDS"]) or 78
+    single = args["SINGLELED"]
     while True:
         for ln in range(max_led):
             time.sleep(0.5)
-            setLed(ln,active_color)
-            #setLed(17,active_color)
-
-
-    
+            if single:
+                setLed(int(single),active_color)
+            else:
+                setLed(ln,active_color)
             asyncio.get_event_loop().run_until_complete(writeLeds())
 
 
 if __name__ == "__main__":
-    main("wd.lst")
+    main()
     

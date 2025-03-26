@@ -1,0 +1,12 @@
+[project]
+name = "worlddomination-pusher"
+version = "1.0.0"
+description = "Backend service for worlddomination map"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "aiocoap>=0.4.14",
+    "docopt>=0.6.2",
+    "grequests>=0.7.0",
+]
+
