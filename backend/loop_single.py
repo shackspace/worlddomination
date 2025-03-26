@@ -8,6 +8,7 @@ import json,sys
 import asyncio
 from aiocoap import *
 
+from docopt import docopt
 import urllib
 import requests
 requests.packages.urllib3.disable_warnings()
@@ -43,11 +44,12 @@ async def writeLeds():
         #print('Result: %s\n%r'%(response.code, response.payload))
         pass
 
-def main(fn):
-    global host 
+def main():
+    global host, max_led
     args = docopt(__doc__)
     host = args["HOST"] or "10.42.24.7"
-    max_led = int(args["NUMLEDS"]) or 78
+    max_led = int(args["NUMLEDS"] or 78)
+    print(max_led)
     single = args["SINGLELED"]
     while True:
         for ln in range(max_led):

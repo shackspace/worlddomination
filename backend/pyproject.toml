@@ -10,3 +10,5 @@ dependencies = [
     "grequests>=0.7.0",
 ]
 
+[project.scripts]
+push_led = "push_led:main"

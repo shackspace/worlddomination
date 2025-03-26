@@ -61,6 +61,14 @@
         # Implement build fixups here.
         # Note that uv2nix is _not_ using Nixpkgs buildPythonPackage.
         # It's using https://pyproject-nix.github.io/pyproject.nix/build.html
+        docopt = _prev.docopt.overrideAttrs(old: {
+
+          nativeBuildInputs = old.nativeBuildInputs ++ [
+            (_final.resolveBuildSystem {
+              setuptools = [ ];
+            })
+          ];
+        });
       };
 
       # This example is only using x86_64-linux
