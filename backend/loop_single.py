@@ -11,33 +11,29 @@ import requests
 requests.packages.urllib3.disable_warnings()
 
 ledbuffer=b''
-host="10.42.25.253"
+host="10.42.24.7"
 setled_path="/v1/f/setLeds"
-max_led=78
-def customLed(idx,color_data):
-    global ledbuffer
-    ledbuffer+=color_data
+#max_led=78
+max_led=20
+filler_buffer=b"\x25\x00\x25"
+active_color=b"\x00\xff\x00"
 
-def setLed(idx,state):
+
+def setLed(idx,color):
+    print(f"LED: {idx}")
     global ledbuffer
     idx = idx+1
-    print(state)
-    ledbuffer=b"\x00\x00\x00"*idx 
-    if state:
-        print('true')
-        ledbuffer+=b"\x00\x25\x00"
-    else:
-        ledbuffer+=b"\x25\x00\x00"
-    ledbuffer+=b"\x00\x00\x00"*(max_led-idx)
+    ledbuffer=filler_buffer*idx 
+    ledbuffer+=color
+    ledbuffer+=filler_buffer*(max_led-idx)
 
-@asyncio.coroutine
-def writeLeds():
-    protocol = yield from Context.create_client_context()
+async def writeLeds():
+    protocol = await Context.create_client_context()
     request = Message(code=POST,payload=ledbuffer)
     request.set_request_uri('coap://{}{}'.format(host,setled_path))
 
     try:
-        response = yield from protocol.request(request).response
+        response = await protocol.request(request).response
     except Exception as e:
         print('Failed to fetch resource:')
         print(e)
@@ -47,23 +43,14 @@ def writeLeds():
         pass
 
 def main(fn):
-    with open(fn) as f:
-        for ln,l in enumerate(f):
-            l = l.strip()
-            time.sleep(1)
-            if not l:
-                # fallback when hackerspace api is broken
-                customLed(idx,b'\x25\x00\x25')
-                continue
-            d = requests.get(l,verify=False).json()
-            if 'open' in d:
-                o =  d['open']
-            elif 'state' in d and 'open' in d['state']:
-                o = d['state']['open'] 
-            else:
-                print("cannot find 'open' for {}".format(l))
-            
-            setLed(ln,o)
+    while True:
+        for ln in range(max_led):
+            time.sleep(0.5)
+            setLed(ln,active_color)
+            #setLed(17,active_color)
+
+
+    
             asyncio.get_event_loop().run_until_complete(writeLeds())
 
 
