@@ -28,7 +28,8 @@ logging.captureWarnings(True)
 ledbuffer=b'\x00\x00\x00'
 #ledbuffer+= b'\x00\x00\x00'*40
 setled_path="/v1/f/setLeds"
-shackspace_endpoint = "http://shackspace.de/spaceapi-query-0.13"
+shackspace_endpoint = "https://api.shackspace.de/v1/spaceapi"
+
 
 def main():
     from docopt import docopt
@@ -65,17 +66,16 @@ def setLed(idx,state):
     else:
         ledbuffer+=b"\x25\x00\x00"
 
-@asyncio.coroutine
-def writeLeds(host):
+async def writeLeds(host):
     log.info("beginning to write LEDs to {}".format(host))
-    protocol = yield from Context.create_client_context()
-    request = Message(code=POST,payload=ledbuffer)
-    request.set_request_uri('coap://{}{}'.format(host,setled_path))
+    protocol = await Context.create_client_context()
+    request = Message(code=POST, payload=ledbuffer)
+    request.set_request_uri('coap://{}{}'.format(host, setled_path))
 
     try:
-        response = yield from protocol.request(request).response
+        response = await protocol.request(request).response
     except Exception as e:
-        log.error('Failed to fetch resource:'.format(e))
+        log.error('Failed to fetch resource: {}'.format(e))
     else:
         log.info('wrote leds: {}'.format(ledbuffer))
         log.debug('Result: %s\n%r'%(response.code, response.payload))
@@ -116,9 +116,10 @@ def fetchmain(fn,host):
         log.info("{}: {} is {}".format(ln,l,o))
         setLed(ln,o)
 
-    asyncio.get_event_loop().run_until_complete(writeLeds(host))
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(writeLeds(host))
 
 
 if __name__ == "__main__":
     main()
-

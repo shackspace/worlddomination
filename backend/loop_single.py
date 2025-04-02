@@ -17,7 +17,7 @@ ledbuffer=b''
 setled_path="/v1/f/setLeds"
 #max_led=78
 max_led=20
-filler_buffer=b"\x25\x00\x25"
+filler_buffer=b"\x00\x00\x00"
 active_color=b"\x00\xff\x00"
 
 

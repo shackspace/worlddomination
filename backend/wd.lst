@@ -1,4 +1,4 @@
-http://spaceapi.hackeriet.no/hackeriet.spaceapi.json
+http://door.hackeriet.no/spaceapi.json
 http://spaceapi.net/cache/Gothemburg+Hackerspace
 http://www.recompile.se/spaceapi
 http://spaceapi.net/cache/Vaasa+Hacklab
@@ -37,8 +37,8 @@ https://fablab.fau.de/spaceapi/
 http://stats.bytewerk.org/status.json
 http://api.muc.ccc.de/spaceapi.json
 http://api.openlab-augsburg.de/data.json
+https://api.shackspace.de/v1/spaceapi
 http://hackerspace-ulm.de/status.json
-http://shackspace.de/spaceapi-query-0.13
 http://it-syndikat.org/status.php
 https://status.crdmp.ch/
 http://spaceapi.net/cache/MechArtLab
